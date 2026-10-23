@@ -24,12 +24,14 @@ Keep that two-step pattern when adding an API: direct assignment breaks the gene
 
 ## Commands (Node 20+; `npm ci` first)
 
-- `npm test`: lint + `types-check` + full Chromium suite (~1.5 min). Run before calling work done.
+- `npm test`: lint + `types-check` + full Chromium suite (~1.5 min). This is exactly what GitHub CI runs
+  (`.github/workflows/ci.yml`), so it is the check before calling work done.
 - `npx web-test-runner --browsers chromium --playwright test/attributes/hx-confirm.js`: one file, ~1 s.
   (`npm test <file>` also works but runs lint and tsc first.)
 - `npm run lint` / `npm run format` (eslint `--fix`). There is no prettier.
 - `npm run types-check`: `tsc --checkJs` over `src/htmx.js`; JSDoc types in the source are enforced.
-- `npm run test:all`: Chromium + Firefox + WebKit, what CI's `test:ci` runs. Use for cross-browser changes.
+- `npm run test:all`: Chromium + Firefox + WebKit, several minutes. Not what CI runs; use it only when a change
+  touches browser-specific behavior (events, history, form handling).
 
 No CHROME_PATH needed: the test scripts run `playwright install` themselves.
 
